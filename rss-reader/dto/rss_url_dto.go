@@ -10,9 +10,9 @@ type AddRssUrlRequest struct {
 }
 
 type GetRssUrlRequest struct {
-	Page  int64  `json:"page" binding:"required"`
-	Limit int64  `json:"limit" binding:"required"`
-	Sort  string `json:"sort"`
+	Page  int64  `form:"page" binding:"required"`
+	Limit int64  `form:"limit" binding:"required"`
+	Sort  string `form:"sort"`
 }
 
 type UpdateRssUrlRequest struct {
