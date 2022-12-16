@@ -14,3 +14,8 @@ type GetRssUrlRequest struct {
 	Limit int64  `json:"limit" binding:"required"`
 	Sort  string `json:"sort"`
 }
+
+type UpdateRssUrlRequest struct {
+	Id  int64  `json:"id" binding:"required"`
+	Url string `json:"url" binding:"required"`
+}

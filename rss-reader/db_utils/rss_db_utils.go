@@ -47,3 +47,13 @@ func GetRssUrlByUrl(url string) (dto.RssUrl, error) {
 	}
 	return rssUrlDto, nil
 }
+
+func UpdateRssUrl(id int64, url string) (models.RssUrl, error) {
+	var rssUrl models.RssUrl
+	rssUrl.Url = url
+	if err := db.DbConnection.Where("id = ?", id).Updates(rssUrl).Error; err != nil {
+		logger.Error("error in UpdateRssUrl", zap.Error(err))
+		return models.RssUrl{}, err
+	}
+	return rssUrl, nil
+}

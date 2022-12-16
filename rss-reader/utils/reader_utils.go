@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
+	"go-rss-reader-service/db_utils"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 	"strings"
@@ -54,4 +56,16 @@ func CalculateTotalPagesForPagination(totalCount int64, limit int64) int64 {
 		totalPages = totalPages + 1
 	}
 	return int64(totalPages)
+}
+
+func CheckIfUrlExistInDb(url string) (bool, error) {
+	rssUrlDto, err := db_utils.GetRssUrlByUrl(url)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		logger.Error("error in AddRssUrl", zap.Error(err))
+		return false, err
+	}
+	if rssUrlDto.Id > 0 {
+		return true, nil
+	}
+	return false, nil
 }

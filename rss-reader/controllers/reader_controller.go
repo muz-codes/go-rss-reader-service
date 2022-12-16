@@ -47,7 +47,7 @@ func AddRssUrl(ctx *gin.Context) {
 		return
 	}
 
-	addedRssUrl, err := services.AddRssUrl(addRssUrlRequest)
+	addedRssUrl, err := services.AddRssUrl(&addRssUrlRequest)
 	if err != nil {
 		addRssUrlResponse.Success = false
 		addRssUrlResponse.Message = fmt.Sprintf("add rss url failed : %v", err.Error())
@@ -86,5 +86,31 @@ func GetAllRssUrls(ctx *gin.Context) {
 	getAllRssUrlsResponse.TotalCount = totalCount
 	getAllRssUrlsResponse.TotalPages = totalPages
 	ctx.JSON(http.StatusOK, getAllRssUrlsResponse)
+	return
+}
+
+func UpdateUrl(ctx *gin.Context) {
+	var updateRssUrlRequest dto.UpdateRssUrlRequest
+	var updateRssUrlResponse dto.UpdateRssUrlResponse
+	if err := ctx.ShouldBindJSON(&updateRssUrlRequest); err != nil {
+		if fieldErrorsArray := utils.GetFieldErrorsArray(err); fieldErrorsArray != nil {
+			ctx.JSON(http.StatusBadRequest, fieldErrorsArray)
+			return
+		}
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	updatedRssUrl, err := services.UpdateRssUrl(&updateRssUrlRequest)
+	if err != nil {
+		updateRssUrlResponse.Success = false
+		updateRssUrlResponse.Message = fmt.Sprintf("update rss url failed : %v", err.Error())
+		ctx.JSON(http.StatusInternalServerError, updateRssUrlResponse)
+		return
+	}
+	updateRssUrlResponse.Success = true
+	updateRssUrlResponse.Message = fmt.Sprintf("rss url updated successfuly")
+	updateRssUrlResponse.Url = updatedRssUrl
+	ctx.JSON(http.StatusOK, updateRssUrlResponse)
 	return
 }
