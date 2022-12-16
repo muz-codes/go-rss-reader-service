@@ -89,7 +89,7 @@ func GetAllRssUrls(ctx *gin.Context) {
 	return
 }
 
-func UpdateUrl(ctx *gin.Context) {
+func UpdateRssUrl(ctx *gin.Context) {
 	var updateRssUrlRequest dto.UpdateRssUrlRequest
 	var updateRssUrlResponse dto.UpdateRssUrlResponse
 	if err := ctx.ShouldBindJSON(&updateRssUrlRequest); err != nil {
@@ -112,5 +112,31 @@ func UpdateUrl(ctx *gin.Context) {
 	updateRssUrlResponse.Message = fmt.Sprintf("rss url updated successfuly")
 	updateRssUrlResponse.Url = updatedRssUrl
 	ctx.JSON(http.StatusOK, updateRssUrlResponse)
+	return
+}
+
+func DeleteRssUrl(ctx *gin.Context) {
+	var deleteRssUrlRequest dto.DeleteRssUrlRequest
+	var DeleteRssUrlResponse dto.DeleteRssUrlResponse
+	if err := ctx.ShouldBindUri(&deleteRssUrlRequest); err != nil {
+		if fieldErrorsArray := utils.GetFieldErrorsArray(err); fieldErrorsArray != nil {
+			ctx.JSON(http.StatusBadRequest, fieldErrorsArray)
+			return
+		}
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	deletedRssUrl, err := services.DeleteRssUrl(&deleteRssUrlRequest)
+	if err != nil {
+		DeleteRssUrlResponse.Success = false
+		DeleteRssUrlResponse.Message = fmt.Sprintf("delete rss url failed : %v", err.Error())
+		ctx.JSON(http.StatusInternalServerError, DeleteRssUrlResponse)
+		return
+	}
+	DeleteRssUrlResponse.Success = true
+	DeleteRssUrlResponse.Message = fmt.Sprintf("rss url deleted successfuly")
+	DeleteRssUrlResponse.Url = deletedRssUrl
+	ctx.JSON(http.StatusOK, DeleteRssUrlResponse)
 	return
 }

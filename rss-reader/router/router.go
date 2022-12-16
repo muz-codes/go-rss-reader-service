@@ -14,7 +14,8 @@ func SetupRouter() *gin.Engine {
 		rss.POST("/reader", controllers.ReadRssFeed)
 		rss.POST("/url/add", controllers.AddRssUrl)
 		rss.GET("/url/list", controllers.GetAllRssUrls)
-		rss.PATCH("/url/update", controllers.UpdateUrl)
+		rss.PATCH("/url/update", controllers.UpdateRssUrl)
+		rss.DELETE("/url/delete/:id", controllers.DeleteRssUrl)
 
 	}
 	return r

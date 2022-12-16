@@ -1,6 +1,8 @@
 package db_utils
 
 import (
+	"errors"
+	"fmt"
 	"go-rss-reader-service/db"
 	"go-rss-reader-service/dto"
 	"go-rss-reader-service/models"
@@ -56,4 +58,18 @@ func UpdateRssUrl(id int64, url string) (models.RssUrl, error) {
 		return models.RssUrl{}, err
 	}
 	return rssUrl, nil
+}
+
+func DeleteRssUrlById(id int64) (dto.RssUrl, error) {
+	var rssUrlDto dto.RssUrl
+	query := db.DbConnection.Table("rss_urls").Where("id = ?", id).Scan(&rssUrlDto).Delete(&models.RssUrl{})
+	if query.Error != nil {
+		logger.Error("error in DeleteRssUrlById", zap.Error(query.Error))
+		return rssUrlDto, query.Error
+	}
+	if query.RowsAffected == 0 {
+		errorOccurred := errors.New(fmt.Sprintf("no url found to delete with id %v", id))
+		return rssUrlDto, errorOccurred
+	}
+	return rssUrlDto, nil
 }

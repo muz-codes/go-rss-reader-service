@@ -19,3 +19,7 @@ type UpdateRssUrlRequest struct {
 	Id  int64  `json:"id" binding:"required"`
 	Url string `json:"url" binding:"required"`
 }
+
+type DeleteRssUrlRequest struct {
+	Id int64 `uri:"id" binding:"required"`
+}
