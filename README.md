@@ -50,3 +50,25 @@ Response:
 <code>
 curl --location --request GET 'http://127.0.0.1:8086/rss/url/list?Limit=2&Page=1&Sort=created_at desc'
 </code>
+
+<h1>Update Rss URLs</h1>
+<p>Updates url against the given id. The url passed is first checked in the db. If the url exists in db, the endpoint will throw the error, and if url is not available in the db, the url will then be validated by calling the url. If response code is in 200 range, the url will be updated against the given ID.
+Params:
+<ul>
+<li>id: int, required (in body)</li>
+<li>url: string, required (in body)</li>
+</ul>
+Response:
+<ul>
+<li>success: bool</li>
+<li>message: string</li>
+<li>rss_url :{id, url}</li>
+</ul>
+<code>
+curl --location --request PATCH 'http://127.0.0.1:8086/rss/url/update' \
+--header 'Content-Type: text/plain' \
+--data-raw '{
+    "id": 2,
+    "url": "https://feeds.simplecast.com/54nAGcIl"
+}'
+</code>
