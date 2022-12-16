@@ -18,7 +18,7 @@ curl --location --request POST 'http://{{host}}:{{port}}/rss/reader' \
 <h1>Add Rss Url To Db</h1>
 Sqlite is used to store and fetch URLs.<br>
 <p>The url passed is first checked in the db. If the url exists in db, the endpoint will throw the error, and if url is not available in the db, the url will then be validated by calling the url. If response code is in 200 range, the url will be added to the db.</p>
-Params:
+Body Params:
 <ul>
 <li>url: string, required (in body)</li>
 </ul>
@@ -53,7 +53,7 @@ curl --location --request GET 'http://127.0.0.1:8086/rss/url/list?limit=2&page=1
 
 <h1>Update Rss URLs</h1>
 <p>Updates url against the given id. The url passed is first checked in the db. If the url exists in db, the endpoint will throw the error, and if url is not available in the db, the url will then be validated by calling the url. If response code is in 200 range, the url will be updated against the given ID.
-Params:
+Body Params:
 <ul>
 <li>id: int, required (in body)</li>
 <li>url: string, required (in body)</li>
@@ -71,4 +71,20 @@ curl --location --request PATCH 'http://127.0.0.1:8086/rss/url/update' \
     "id": 2,
     "url": "https://feeds.simplecast.com/54nAGcIl"
 }'
+</code>
+
+<h1>Delete Rss URLs</h1>
+<p>Deletes url against the given id if the url is available in the db else the API will throw error.
+URI Params:
+<ul>
+<li>id: int, required (in uri)</li>
+</ul>
+Response:
+<ul>
+<li>success: bool</li>
+<li>message: string</li>
+<li>rss_url :{id, url}</li>
+</ul>
+<code>
+curl --location --request DELETE 'http://127.0.0.1:8086/rss/url/delete/4'
 </code>
