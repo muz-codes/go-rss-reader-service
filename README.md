@@ -32,11 +32,11 @@ curl --location --request POST 'http://127.0.0.1:8086/rss/url/add' \
 
 <h1>Fetch Rss URLs List From Db</h1>
 Fetch rss urls based on page no. and limit per page sorted by created_at either desc or asc.
-Params:
+Query Params:
 <ul>
-<li>Limit: limit per page - int, required</li>
-<li>Page: page no - int, required</li>
-<li>Sort: sort by created_at asc OR created_at desc | Default: create_at desc</li>
+<li>limit: limit per page - int, required</li>
+<li>page: page no - int, required</li>
+<li>sort: sort by created_at asc OR created_at desc | Default: create_at desc</li>
 </ul>
 
 Response:
@@ -48,7 +48,7 @@ Response:
 <li>total_pages: total number of pages</li>
 </ul>
 <code>
-curl --location --request GET 'http://127.0.0.1:8086/rss/url/list?Limit=2&Page=1&Sort=created_at desc'
+curl --location --request GET 'http://127.0.0.1:8086/rss/url/list?limit=2&page=1&sort=created_at desc'
 </code>
 
 <h1>Update Rss URLs</h1>
